@@ -4,7 +4,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import WorkoutDaily from "./WorkoutDaily";
 import Home from ".";
-import Allworkouts from "./Allworkouts";
+import Allworkouts from "./AllWorkouts";
 import Dailyhealth from "./DailyHealth";
 import { View } from "react-native";
 import { Link } from "expo-router";

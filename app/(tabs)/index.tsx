@@ -35,18 +35,6 @@ export default function Home() {
           )}
         />
       )}
-
-      {/* {intro &&
-        intro.map((intros) => (
-          <View key={intros.id} style={styles.container}>
-            <View>
-              <Text style={styles.title}>{intros.headline}</Text>
-            </View>
-            <View>
-              <Text style={styles.description}>{intros.description}</Text>
-            </View>
-          </View>
-        ))} */}
     </SafeAreaView>
   );
 }

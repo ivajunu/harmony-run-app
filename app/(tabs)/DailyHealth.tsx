@@ -1,15 +1,9 @@
-import { useEffect, useState } from "react";
-import { RadioButton, RadioGroup } from "react-native-radio-buttons-group";
-import { View } from "react-native";
-import { Mood } from "@/components/Forms/RadioChoices";
-import HealthForm from "@/components/Forms/HealthForm";
-// import RadioChoice from "../../Inputs/RadioInput/RadioChoice";
-// import RadioInput from "../../Inputs/RadioInput/RadioInput";
-// import ButtonPrimary from "../../Buttons/Button";
-// import { Styledh1, StyledButtonDiv } from "./HealthForm.styled.tsx";
-// import { useNavigate } from "react-router";
+import { Converter, storeBackendKey } from "@/components/Functions/Functions";
+import { useEffect, useMemo, useState } from "react";
+import { View, Text, Pressable, ScrollView } from "react-native";
+import { RadioButtonProps, RadioGroup } from "react-native-radio-buttons-group";
 
-export default function DailyHealth() {
+export default function HealthForm() {
   const [mood, setMood] = useState<string>("");
   const [energy, setEnergy] = useState<string>("");
   const [pain, setPain] = useState<string>("");
@@ -18,204 +12,254 @@ export default function DailyHealth() {
   const [periodPain, setPeriodPain] = useState<string>("");
   const [disabled, setDisabled] = useState<boolean>(true);
 
-  // const navigate = useNavigate();
+  const Mood: RadioButtonProps[] = useMemo(
+    () => [
+      {
+        id: "1",
+        label: "Happy & Motivated",
+        value: "5",
+      },
+      {
+        id: "2",
+        label: "Good",
+        value: "4",
+      },
+      {
+        id: "3",
+        label: "So-so",
+        value: "3",
+      },
+      {
+        id: "4",
+        label: "Unmotivated",
+        value: "2",
+      },
+      {
+        id: "5",
+        label: "Bad",
+        value: "1",
+      },
+    ],
+    []
+  );
 
-  // console.log(mood.valueOf);
+  const Energy: RadioButtonProps[] = useMemo(
+    () => [
+      {
+        id: "1",
+        label: "Energetic",
+        value: "5",
+      },
+      {
+        id: "2",
+        label: "Good",
+        value: "4",
+      },
+      {
+        id: "3",
+        label: "A bit tired",
+        value: "2",
+      },
+      {
+        id: "4",
+        label: "Very tired",
+        value: "0",
+      },
+    ],
+    []
+  );
 
-  // useEffect(() => {
-  //   if (
-  //     mood !== "" &&
-  //     energy !== "" &&
-  //     pain !== "" &&
-  //     period !== "" &&
-  //     flow !== "" &&
-  //     periodPain !== ""
-  //   ) {
-  //     setDisabled(false);
-  //   } else {
-  //     setDisabled(true);
-  //   }
-  // }, [energy, flow, mood, pain, period, periodPain]);
+  const Pain: RadioButtonProps[] = useMemo(
+    () => [
+      {
+        id: "1",
+        label: "Yes",
+        value: "0",
+      },
+      {
+        id: "2",
+        label: "No",
+        value: "5",
+      },
+    ],
+    []
+  );
 
-  // function handlesubmit() {
-  //   // valde att ha kvar värdena som strings för att inte formulären skulle få problem
-  //   const moodValue = Number(mood);
-  //   console.log(moodValue);
-  //   const energyValue = Number(energy);
-  //   console.log(energyValue);
+  const Flow: RadioButtonProps[] = useMemo(
+    () => [
+      {
+        id: "1",
+        label: "No",
+        value: "5",
+      },
+      {
+        id: "2",
+        label: "Some discharge",
+        value: "4",
+      },
+      {
+        id: "3",
+        label: "A lot of discharge",
+        value: "3",
+      },
+      {
+        id: "4",
+        label: "Period=Light flow",
+        value: "2",
+      },
+      {
+        id: "5",
+        label: "Period=Regular flow",
+        value: "1",
+      },
+      {
+        id: "6",
+        label: "Period=Heavy flow",
+        value: "0",
+      },
+    ],
+    []
+  );
 
-  //   const painValue = Number(pain);
-  //   console.log(painValue);
+  const PeriodPain: RadioButtonProps[] = useMemo(
+    () => [
+      {
+        id: "1",
+        label: "Yes a lot",
+        value: "0",
+      },
+      {
+        id: "2",
+        label: "Yes a little bit",
+        value: "1",
+      },
+      {
+        id: "3",
+        label: "Just a little",
+        value: "3",
+      },
+      {
+        id: "4",
+        label: "Not really",
+        value: "4",
+      },
+      {
+        id: "5",
+        label: "No",
+        value: "5",
+      },
+    ],
+    []
+  );
+  const Period: RadioButtonProps[] = useMemo(
+    () => [
+      {
+        id: "1",
+        label: "Yes",
+        value: "3",
+      },
+      {
+        id: "2",
+        label: "No",
+        value: "5",
+      },
+    ],
+    []
+  );
 
-  //   const periodValue = Number(period);
-  //   console.log(periodValue);
+  useEffect(() => {
+    if (
+      mood !== "" &&
+      energy !== "" &&
+      pain !== "" &&
+      period !== "" &&
+      flow !== "" &&
+      periodPain !== ""
+    ) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [energy, flow, mood, pain, period, periodPain]);
 
-  //   const flowValue = Number(flow);
-  //   console.log(flowValue);
+  function handlesubmit() {
+    // Spara value som nummer
+    const formvalues = {
+      mood: Number(Mood.find((button) => button.id === mood)?.value ?? ""),
+      energy: Number(
+        Energy.find((button) => button.id === energy)?.value ?? ""
+      ),
+      pain: Number(Pain.find((button) => button.id === pain)?.value ?? ""),
+      period: Number(
+        Period.find((button) => button.id === period)?.value ?? ""
+      ),
+      flow: Number(Flow.find((button) => button.id === flow)?.value ?? ""),
+      periodPain: Number(
+        PeriodPain.find((button) => button.id === periodPain)?.value ?? ""
+      ),
+    };
+    console.log(formvalues);
 
-  //   const periodPainValue = Number(periodPain);
-  //   console.log(periodPainValue);
+    // Gör om till ett värde avrundat uppåt
+    const dailyResult = Math.round(
+      (formvalues.mood +
+        formvalues.energy +
+        formvalues.pain +
+        formvalues.period +
+        formvalues.flow +
+        formvalues.periodPain) /
+        6
+    );
+    console.log("resultat", dailyResult);
 
-  //   const dailyResult = Math.round(
-  //     (moodValue +
-  //       energyValue +
-  //       painValue +
-  //       periodValue +
-  //       flowValue +
-  //       periodPainValue) /
-  //       6
-  //   );
-  //   console.log("resultat", dailyResult);
+    const finalresult = Converter(dailyResult);
+    console.log(finalresult);
 
-  //   function Converter(dailyResult: number) {
-  //     console.log("den går in här");
-  //     let resultCategory: string = "nothing";
-  //     if (dailyResult <= 2) {
-  //       resultCategory = "low";
-  //     } else if (dailyResult <= 4) {
-  //       resultCategory = "medium";
-  //     } else if (dailyResult === 5) {
-  //       resultCategory = "high";
-  //     }
-  //     console.log(resultCategory);
-  //     return resultCategory;
-  //   }
-
-  //   const finalResult = Converter(dailyResult);
-  //   console.log("finalresult:", finalResult);
-  //   localStorage.setItem("backendKey", JSON.stringify(finalResult));
-  //   // navigate("/workout-advice");
-  // }
+    // spara till storage
+    storeBackendKey(finalresult);
+  }
 
   return (
-    <>
+    <ScrollView>
       <View>
-        <HealthForm />
+        <Text>How are you feeling today?</Text>
+        <RadioGroup radioButtons={Mood} selectedId={mood} onPress={setMood} />
       </View>
-
-      {/* <RadioInput
-        ariaLabel="energy"
-        formId="energy"
-        formLabel="What is your energy level?"
-        radioGroupName="energy"
-        onChange={(e) => {
-          setEnergy(e.target.value);
-        }}
-        value={energy}
-      >
-        <RadioChoice choiceLabel="Energetic" radioId="energetic" value="5" />
-        <RadioChoice choiceLabel="Good" radioId="good-energy" value="4" />
-        <RadioChoice
-          choiceLabel="A bit tired"
-          radioId="a-bit-tired"
-          value="2"
+      <View>
+        <Text>What is your energy level?</Text>
+        <RadioGroup
+          radioButtons={Energy}
+          selectedId={energy}
+          onPress={setEnergy}
         />
-        <RadioChoice choiceLabel="Very tired" radioId="very-tired" value="0" />
-      </RadioInput>
-
-      <RadioInput
-        ariaLabel="pain"
-        formId="pain"
-        formLabel="Do you have any pain in your body?"
-        radioGroupName="pain"
-        onChange={(e) => {
-          setPain(e.target.value);
-        }}
-        value={pain}
-      >
-        <RadioChoice choiceLabel="Yes" radioId="yes-pain" value="0" />
-        <RadioChoice choiceLabel="No" radioId="no-pain" value="5" />
-      </RadioInput>
-
-      <RadioInput
-        ariaLabel="period"
-        formId="period"
-        formLabel="Are you on your period?"
-        radioGroupName="period"
-        onChange={(e) => {
-          setPeriod(e.target.value);
-        }}
-        value={period}
-      >
-        <RadioChoice choiceLabel="Yes" radioId="yes-period" value="3" />
-        <RadioChoice choiceLabel="No" radioId="no-period" value="5" />
-      </RadioInput>
-
-      <RadioInput
-        ariaLabel="flow"
-        formId="flow"
-        formLabel="Discharge/Flow?"
-        radioGroupName="flow"
-        onChange={(e) => {
-          setFlow(e.target.value);
-        }}
-        value={flow}
-      >
-        <RadioChoice choiceLabel="No" radioId="no-flow" value="5" />
-        <RadioChoice
-          choiceLabel="Some discharge"
-          radioId="some-discharge"
-          value="4"
+      </View>
+      <View>
+        <Text>Do you have any pain in your body?</Text>
+        <RadioGroup radioButtons={Pain} selectedId={pain} onPress={setPain} />
+      </View>
+      <View>
+        <Text>Are you on your period?</Text>
+        <RadioGroup
+          radioButtons={Period}
+          selectedId={period}
+          onPress={setPeriod}
         />
-        <RadioChoice
-          choiceLabel="A lot of discharge"
-          radioId="alot-discharge"
-          value="3"
+      </View>
+      <View>
+        <Text>Discharge/Flow?</Text>
+        <RadioGroup radioButtons={Flow} selectedId={flow} onPress={setFlow} />
+      </View>
+      <View>
+        <Text>Do you have any period pain?</Text>
+        <RadioGroup
+          radioButtons={PeriodPain}
+          selectedId={periodPain}
+          onPress={setPeriodPain}
         />
-        <RadioChoice
-          choiceLabel="Period=Light flow"
-          radioId="light-flow"
-          value="2"
-        />
-        <RadioChoice
-          choiceLabel="Period=Regular flow"
-          radioId="regular-flow"
-          value="1"
-        />
-        <RadioChoice
-          choiceLabel="Period=Heavy flow"
-          radioId="heavy-flow"
-          value="0"
-        />
-      </RadioInput>
-
-      <RadioInput
-        ariaLabel="period-pain"
-        formId="period-pain"
-        formLabel="Do you have any period pain?"
-        radioGroupName="period-pain"
-        onChange={(e) => {
-          setPeriodPain(e.target.value);
-        }}
-        value={periodPain}
-      >
-        <RadioChoice choiceLabel="Yes a lot" radioId="p-pain-alot" value="0" />
-        <RadioChoice
-          choiceLabel="Yes a little bit"
-          radioId="p-pain-alittle"
-          value="1"
-        />
-        <RadioChoice
-          choiceLabel="Just a little"
-          radioId="p-pain-little"
-          value="3"
-        />
-        <RadioChoice
-          choiceLabel="Not really"
-          radioId="p-pain-notreally"
-          value="4"
-        />
-        <RadioChoice choiceLabel="No" radioId="p-pain-no" value="5" />
-      </RadioInput>
-      <StyledButtonDiv>
-        <ButtonPrimary
-          buttonLabel="Send"
-          onClick={handlesubmit}
-          variant="outlined"
-          disabled={disabled}
-          id="submit"
-        />
-      </StyledButtonDiv> */}
-    </>
+      </View>
+      <Pressable onPress={handlesubmit} disabled={disabled}>
+        <Text>Skicka</Text>
+      </Pressable>
+    </ScrollView>
   );
 }
