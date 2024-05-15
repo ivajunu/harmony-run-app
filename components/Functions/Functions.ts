@@ -17,7 +17,7 @@ export const storeBackendKey = async (value: string) => {
     await AsyncStorage.setItem("backendKey", value);
     console.log("det har sparats till storage", value);
   } catch (e) {
-    // saving error
+    console.log(e);
   }
 };
 

@@ -1,8 +1,12 @@
 import { WorkoutProps } from "@/Types/Types";
-import { useEffect, useState } from "react";
-import { View, Text, Pressable } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, Pressable, FlatList } from "react-native";
 
 export default function AllWorkouts() {
+  const [high, setHigh] = useState<boolean | undefined>(false);
+  const [medium, setMedium] = useState<boolean | undefined>(false);
+  const [low, setLow] = useState<boolean | undefined>(false);
+
   const [allWorkouts, setAllWorkouts] = useState({
     low: [],
     medium: [],
@@ -45,6 +49,21 @@ export default function AllWorkouts() {
         >
           <Text>High intensity workouts</Text>
         </Pressable>
+        {high && (
+          <View>
+            <FlatList
+              data={allWorkouts.high}
+              keyExtractor={(item, index) => index.toString()} // Assuming you want to use the index as the key
+              renderItem={({ item }) => (
+                <View>
+                  <Text>{item}</Text>{" "}
+                  {/* Replace "propertyName" with the actual property name you want to display */}
+                  {/* Add more Text components to display other properties */}
+                </View>
+              )}
+            />
+          </View>
+        )}
       </View>
       <View>
         <Pressable
