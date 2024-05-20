@@ -1,6 +1,7 @@
 import { Converter, storeBackendKey } from "@/components/Functions/Functions";
+import { useNavigation } from "@react-navigation/native";
 import { useEffect, useMemo, useState } from "react";
-import { View, Text, Pressable, ScrollView } from "react-native";
+import { View, Text, Pressable, ScrollView, Button } from "react-native";
 import { RadioButtonProps, RadioGroup } from "react-native-radio-buttons-group";
 
 export default function HealthForm() {
@@ -11,6 +12,8 @@ export default function HealthForm() {
   const [flow, setFlow] = useState<string>("");
   const [periodPain, setPeriodPain] = useState<string>("");
   const [disabled, setDisabled] = useState<boolean>(true);
+
+  const navigation = useNavigation();
 
   // radiobuttons
   const Mood: RadioButtonProps[] = useMemo(
@@ -218,6 +221,9 @@ export default function HealthForm() {
 
     // spara till storage
     storeBackendKey(finalresult);
+
+    // @ts-ignore
+    navigation.navigate("Dailyworkout");
   }
 
   return (
@@ -258,9 +264,7 @@ export default function HealthForm() {
           onPress={setPeriodPain}
         />
       </View>
-      <Pressable onPress={handlesubmit} disabled={disabled}>
-        <Text>Skicka</Text>
-      </Pressable>
+      <Button onPress={handlesubmit} disabled={disabled} title="Send" />
     </ScrollView>
   );
 }

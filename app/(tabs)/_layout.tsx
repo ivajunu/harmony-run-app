@@ -1,20 +1,42 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import WorkoutDaily from "./WorkoutDaily";
 import Home from ".";
-import Allworkouts from "./AllWorkouts";
 import Dailyhealth from "./DailyHealth";
 import { View } from "react-native";
 import { Link } from "expo-router";
 import AccountScreen from "./Account";
 import MenuButton from "@/components/MenuButton";
 import Icon from "@/components/Icon";
+import AllWorkouts from "./Allworkouts";
+import CreateAccount from "./CreateAccount";
+import UserCreated from "./UserCreated";
+import MyPages from "./MyPages";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Drawer = createDrawerNavigator();
 
 export default function TabLayout() {
+  const [loggedIn, setLoggedIn] = useState<string | null>("");
+
+  const getUser = async () => {
+    try {
+      const value = await AsyncStorage.getItem("IsLoggedInKey");
+      console.log("Hämtat värde från LoggedInkey", value);
+      setLoggedIn(value);
+    } catch (error) {
+      console.error("Error reading value from AsyncStorage:", error);
+    }
+  };
+
+  // Denna kollar hela tiden om en användare är inloggad.
+  useFocusEffect(() => {
+    getUser();
+  });
+
   return (
     <Drawer.Navigator
       initialRouteName="Home"
@@ -40,7 +62,7 @@ export default function TabLayout() {
         headerLeft: () => null,
         headerRight: () => (
           <View style={{ flexDirection: "row", marginRight: 20 }}>
-            <Link href={"Account"}>
+            <Link href={loggedIn ? "MyPages" : "Account"}>
               <Icon name="user" version="5" color="#f3ecef" size={35} />
             </Link>
             <View style={{ marginLeft: 20 }}>
@@ -59,14 +81,14 @@ export default function TabLayout() {
         }}
       />
       <Drawer.Screen
-        name="Daily Health"
+        name="Daily health form"
         component={Dailyhealth}
         options={{
           drawerIcon: () => <Icon name="heart-o" color={"#f3ecef"} />,
         }}
       />
       <Drawer.Screen
-        name="Daily workout"
+        name="Dailyworkout"
         component={WorkoutDaily}
         options={{
           drawerIcon: () => (
@@ -75,8 +97,8 @@ export default function TabLayout() {
         }}
       />
       <Drawer.Screen
-        name="All workouts"
-        component={Allworkouts}
+        name="Allworkouts"
+        component={AllWorkouts}
         options={{
           drawerIcon: () => <Icon name="list-alt" color={"#f3ecef"} />,
         }}
@@ -85,6 +107,31 @@ export default function TabLayout() {
         name="Account"
         component={AccountScreen}
         options={{
+          drawerItemStyle: { display: "none" },
+          drawerIcon: () => <Icon name="user" version="5" color={"#f3ecef"} />,
+        }}
+      />
+      <Drawer.Screen
+        name="CreateAccount"
+        component={CreateAccount}
+        options={{
+          drawerItemStyle: { display: "none" },
+          drawerIcon: () => <Icon name="user" version="5" color={"#f3ecef"} />,
+        }}
+      />
+      <Drawer.Screen
+        name="UserCreated"
+        component={UserCreated}
+        options={{
+          drawerItemStyle: { display: "none" },
+          drawerIcon: () => <Icon name="user" version="5" color={"#f3ecef"} />,
+        }}
+      />
+      <Drawer.Screen
+        name="MyPages"
+        component={MyPages}
+        options={{
+          drawerItemStyle: { display: loggedIn ? "flex" : "none" },
           drawerIcon: () => <Icon name="user" version="5" color={"#f3ecef"} />,
         }}
       />

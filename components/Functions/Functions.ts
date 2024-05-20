@@ -21,9 +21,27 @@ export const storeBackendKey = async (value: string) => {
   }
 };
 
+export const setIsLoggedInKey = async (value: string) => {
+  try {
+    await AsyncStorage.setItem("IsLoggedInKey", value);
+    console.log("Användare har loggat in", value);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const getBackendKey = async () => {
   try {
     const value = await AsyncStorage.getItem("backendKey");
+    console.log("hämtat värde från store", value);
+  } catch (error) {
+    console.error("Error reading value from AsyncStorage:", error);
+  }
+};
+
+export const getLoggedInUser = async () => {
+  try {
+    const value = await AsyncStorage.getItem("IsLoggedInKey");
     console.log("hämtat värde från store", value);
   } catch (error) {
     console.error("Error reading value from AsyncStorage:", error);

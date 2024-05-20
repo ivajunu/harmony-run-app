@@ -16,3 +16,10 @@ export interface Homepage {
   headline: string;
   description: string;
 }
+
+export type User = {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+};

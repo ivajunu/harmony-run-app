@@ -1,13 +1,19 @@
 import { WorkoutProps } from "@/Types/Types";
 import React, { useEffect, useState } from "react";
-import { View, Text, Pressable, FlatList } from "react-native";
+import { View, Text, Pressable, FlatList, StyleSheet } from "react-native";
 
 export default function AllWorkouts() {
   const [high, setHigh] = useState<boolean | undefined>(false);
   const [medium, setMedium] = useState<boolean | undefined>(false);
   const [low, setLow] = useState<boolean | undefined>(false);
 
-  const [allWorkouts, setAllWorkouts] = useState({
+  type WorkoutState = {
+    low: WorkoutProps[];
+    medium: WorkoutProps[];
+    high: WorkoutProps[];
+  };
+
+  const [allWorkouts, setAllWorkouts] = useState<WorkoutState>({
     low: [],
     medium: [],
     high: [],
@@ -34,31 +40,38 @@ export default function AllWorkouts() {
       });
   }
 
-  console.log("high", allWorkouts.high);
-  console.log("medium", allWorkouts.medium);
-  console.log("low", allWorkouts.low);
-
   return (
     <>
       <Text>Browse all workouts</Text>
       <View>
         <Pressable
           onPress={() => {
-            fetchWorkouts(URL.high, "high");
+            if (allWorkouts.high.length === 0) {
+              fetchWorkouts(URL.high, "high");
+            }
+            setHigh(!high);
           }}
+          style={styles.container}
         >
-          <Text>High intensity workouts</Text>
+          <Text style={styles.title}>High intensity workouts</Text>
         </Pressable>
         {high && (
           <View>
             <FlatList
               data={allWorkouts.high}
-              keyExtractor={(item, index) => index.toString()} // Assuming you want to use the index as the key
+              keyExtractor={(item) => item.id.toString()} // Assuming you want to use the index as the key
               renderItem={({ item }) => (
                 <View>
-                  <Text>{item}</Text>{" "}
-                  {/* Replace "propertyName" with the actual property name you want to display */}
-                  {/* Add more Text components to display other properties */}
+                  <Text>{item.type}</Text>
+                  <View>
+                    <Text>{item.duration}</Text>
+                  </View>
+                  <View>
+                    <Text>{item.instruction}</Text>
+                  </View>
+                  <View>
+                    <Text>{item.intensity}</Text>
+                  </View>
                 </View>
               )}
             />
@@ -68,21 +81,95 @@ export default function AllWorkouts() {
       <View>
         <Pressable
           onPress={() => {
-            fetchWorkouts(URL.medium, "medium");
+            if (allWorkouts.medium.length === 0) {
+              fetchWorkouts(URL.medium, "medium");
+            }
+            setMedium(!medium);
           }}
+          style={styles.container}
         >
-          <Text>Medium intensity workouts</Text>
+          <Text style={styles.title}>Medium intensity workouts</Text>
         </Pressable>
+        {medium && (
+          <View>
+            <FlatList
+              data={allWorkouts.medium}
+              keyExtractor={(item) => item.id.toString()} // Assuming you want to use the index as the key
+              renderItem={({ item }) => (
+                <View style={styles.container}>
+                  <View>
+                    <Text style={styles.title}>{item.type}</Text>
+                  </View>
+                  <View>
+                    <Text>{item.duration}</Text>
+                  </View>
+                  <View>
+                    <Text>{item.instruction}</Text>
+                  </View>
+                  <View>
+                    <Text>{item.intensity}</Text>
+                  </View>
+                </View>
+              )}
+            />
+          </View>
+        )}
       </View>
       <View>
         <Pressable
           onPress={() => {
-            fetchWorkouts(URL.low, "low");
+            if (allWorkouts.low.length === 0) {
+              fetchWorkouts(URL.low, "low");
+            }
+            setLow(!low);
           }}
+          style={styles.container}
         >
-          <Text>Low intensity workouts</Text>
+          <Text style={styles.title}>Low intensity workouts</Text>
         </Pressable>
+        {low && (
+          <View>
+            <FlatList
+              data={allWorkouts.low}
+              keyExtractor={(item) => item.id.toString()} // Assuming you want to use the index as the key
+              renderItem={({ item }) => (
+                <View>
+                  <Text>{item.type}</Text>
+                  <View>
+                    <Text>{item.duration}</Text>
+                  </View>
+                  <View>
+                    <Text>{item.instruction}</Text>
+                  </View>
+                  <View>
+                    <Text>{item.intensity}</Text>
+                  </View>
+                </View>
+              )}
+            />
+          </View>
+        )}
       </View>
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#a01d5d",
+    margin: 10,
+    borderRadius: 15,
+    paddingTop: 15,
+    paddingBottom: 15,
+  },
+  title: {
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "white",
+  },
+  description: {
+    margin: 10,
+    color: "white",
+  },
+});
