@@ -30,6 +30,15 @@ export const setIsLoggedInKey = async (value: string) => {
   }
 };
 
+export const setUserID = async (value: string) => {
+  try {
+    await AsyncStorage.setItem("setUserID", value);
+    console.log("Användarens ID", value);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const getBackendKey = async () => {
   try {
     const value = await AsyncStorage.getItem("backendKey");

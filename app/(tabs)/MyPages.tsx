@@ -6,6 +6,7 @@ import { View, Text, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
+import EditAccont from "@/components/EditAccout";
 
 export default function MyPages() {
   const navigation = useNavigation();
@@ -57,6 +58,9 @@ export default function MyPages() {
       <View>
         <Text>Log out?</Text>
         <Button title="Sign out" onPress={handleLogout} />
+      </View>
+      <View>
+        <EditAccont />
       </View>
     </>
   );

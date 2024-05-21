@@ -16,6 +16,7 @@ import UserCreated from "./UserCreated";
 import MyPages from "./MyPages";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
+import SavedTraining from "./SavedTraining";
 
 const Drawer = createDrawerNavigator();
 
@@ -130,6 +131,14 @@ export default function TabLayout() {
       <Drawer.Screen
         name="MyPages"
         component={MyPages}
+        options={{
+          drawerItemStyle: { display: loggedIn ? "flex" : "none" },
+          drawerIcon: () => <Icon name="user" version="5" color={"#f3ecef"} />,
+        }}
+      />
+      <Drawer.Screen
+        name="SavedTraining"
+        component={SavedTraining}
         options={{
           drawerItemStyle: { display: loggedIn ? "flex" : "none" },
           drawerIcon: () => <Icon name="user" version="5" color={"#f3ecef"} />,
