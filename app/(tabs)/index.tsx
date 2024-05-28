@@ -44,26 +44,3 @@ export default function Home() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#a01d5d",
-    color: "white",
-    margin: 10,
-    borderRadius: 15,
-    paddingTop: 15,
-    paddingBottom: 15,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-  },
-  description: {
-    margin: 10,
-    color: "white",
-  },
-});

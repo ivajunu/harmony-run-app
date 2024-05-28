@@ -5,7 +5,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import WorkoutDaily from "./WorkoutDaily";
 import Home from ".";
 import Dailyhealth from "./DailyHealth";
-import { View } from "react-native";
+import { View, Image } from "react-native";
 import { Link } from "expo-router";
 import AccountScreen from "./Account";
 import MenuButton from "@/components/MenuButton";
@@ -49,7 +49,7 @@ export default function TabLayout() {
         headerTintColor: "#f3ecef",
         headerTitleStyle: {
           fontSize: 30,
-          paddingHorizontal: 40,
+          // paddingHorizontal: 40,
           fontFamily: "DosisBold",
         },
         drawerStyle: {
@@ -61,7 +61,17 @@ export default function TabLayout() {
           fontWeight: "500",
         },
         drawerPosition: "right",
-        headerLeft: () => null,
+        headerLeft: () => (
+          <Image
+            source={require("@/assets/images/runningshoes.png")}
+            style={{
+              width: 80,
+              height: 80,
+              marginLeft: 20,
+              resizeMode: "contain",
+            }}
+          />
+        ),
         headerRight: () => (
           <View style={{ flexDirection: "row", marginRight: 20 }}>
             <Link href={loggedIn ? "MyPages" : "Account"}>
