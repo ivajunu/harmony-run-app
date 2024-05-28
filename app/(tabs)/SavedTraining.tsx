@@ -1,7 +1,14 @@
+import { StyledViewBlueBackground } from "@/styled/StyledContainers";
+import {
+  StyledText16PinkBold,
+  StyledText16PinkRegular,
+  StyledTitleGreen,
+  StyledTitlePink,
+} from "@/styled/StyledText.styled";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "expo-router";
 import { useState, useCallback } from "react";
-import { View, Text, FlatList } from "react-native";
+import { View, FlatList } from "react-native";
 
 export default function SavedTraining() {
   const [loggedIn, setLoggedIn] = useState<string | null>(null);
@@ -52,18 +59,36 @@ export default function SavedTraining() {
 
   return (
     <View>
-      <Text>Your saved exercises</Text>
+      <StyledTitleGreen style={{ fontSize: 26 }}>
+        SAVED EXERCISES
+      </StyledTitleGreen>
       <FlatList
         data={exercises}
-        keyExtractor={(item) => `${item.user_id}-${item.savedexercise.id}`}
+        keyExtractor={(item, index) =>
+          `${item.user_id}-${item.savedexercise.id}-${index}`
+        }
         renderItem={({ item }) => (
-          <View>
-            <Text>Type of exercise: {item.savedexercise.type}</Text>
-            <Text>Duration: {item.savedexercise.duration}</Text>
-            <Text>Intensity: {item.savedexercise.intensity}</Text>
-            <Text>Instruction: {item.savedexercise.instruction}</Text>
-            <Text>Score: {item.score}</Text>
-          </View>
+          <StyledViewBlueBackground>
+            <StyledTitlePink>Your score: {item.score}</StyledTitlePink>
+            <View>
+              <StyledText16PinkBold>Type of exercise:</StyledText16PinkBold>
+              <StyledText16PinkRegular>
+                {item.savedexercise.type}
+              </StyledText16PinkRegular>
+              <StyledText16PinkBold>Duration:</StyledText16PinkBold>
+              <StyledText16PinkRegular>
+                {item.savedexercise.duration}
+              </StyledText16PinkRegular>
+              <StyledText16PinkBold>Intensity:</StyledText16PinkBold>
+              <StyledText16PinkRegular>
+                {item.savedexercise.intensity}
+              </StyledText16PinkRegular>
+              <StyledText16PinkBold>Instruction:</StyledText16PinkBold>
+              <StyledText16PinkRegular>
+                {item.savedexercise.instruction}
+              </StyledText16PinkRegular>
+            </View>
+          </StyledViewBlueBackground>
         )}
       />
     </View>

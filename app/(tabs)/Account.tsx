@@ -1,20 +1,30 @@
 import { User } from "@/Types/Types";
 import { setIsLoggedInKey } from "@/components/Functions/Functions";
-import { Link, useNavigation } from "@react-navigation/native";
-import { useContext, useState } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
+import { AllViewStyle, StyledViewPinkBorder } from "@/styled/StyledContainers";
+import { ErrorMessage, StyledInput } from "@/styled/StyledForms.styled";
+import {
+  ButtonText,
+  StyledPressable,
+  StyledTitlePink,
+} from "@/styled/StyledText.styled";
+import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { View, StyleSheet } from "react-native";
 
 export default function AccountScreen() {
-  const [email, onChangeEmail] = useState("");
-  const [password, onChangePassword] = useState("");
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const navigation = useNavigation();
 
-  async function handleSignIn() {
+  async function handleSignIn(formData: Record<string, any>) {
     try {
       const response = await fetch(
         `https://harmony-run-backend.onrender.com/users?email=${encodeURIComponent(
-          email
+          formData.email
         )}`,
         {
           method: "GET",
@@ -24,7 +34,6 @@ export default function AccountScreen() {
         }
       );
 
-      // Log the status and response text
       console.log("Response status:", response.status);
       const responseText = await response.text();
       console.log("Response text:", responseText);
@@ -47,28 +56,65 @@ export default function AccountScreen() {
 
   return (
     <>
-      <View>
-        <Text>Account</Text>
-        <Text>Sign in</Text>
-        <TextInput
-          onChangeText={onChangeEmail}
-          value={email}
-          placeholder="Email"
-          style={styles.input}
-        />
-        <TextInput
-          onChangeText={onChangePassword}
-          value={password}
-          placeholder="Password"
-          style={styles.input}
-          secureTextEntry
-        />
-        <Button title="Sign in" onPress={handleSignIn} />
-      </View>
-      <View>
-        <Text>Don't have an account?</Text>
-        <Link to="/CreateAccount">Create account</Link>
-      </View>
+      <AllViewStyle>
+        <StyledViewPinkBorder>
+          <StyledTitlePink style={{ textAlign: "center", fontSize: 26 }}>
+            SIGN IN
+          </StyledTitlePink>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <StyledInput
+                onChangeText={onChange}
+                onBlur={onBlur}
+                value={value}
+                placeholder="Email"
+                placeholderTextColor={"white"}
+              />
+            )}
+            name="email"
+            rules={{ required: true, pattern: /\S+@\S+\.\S+/ }}
+            defaultValue=""
+          />
+          {errors.email && (
+            <ErrorMessage>Must be a valid email & it's required</ErrorMessage>
+          )}
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <StyledInput
+                onChangeText={onChange}
+                onBlur={onBlur}
+                value={value}
+                placeholder="Password"
+                placeholderTextColor={"white"}
+                secureTextEntry
+              />
+            )}
+            name="password"
+            rules={{ required: true }}
+          />
+          {errors.password && <ErrorMessage>Password is required</ErrorMessage>}
+          <View style={{ alignItems: "center", padding: 10 }}>
+            <StyledPressable onPress={handleSubmit(handleSignIn)}>
+              <ButtonText>SIGN IN</ButtonText>
+            </StyledPressable>
+          </View>
+        </StyledViewPinkBorder>
+        <StyledViewPinkBorder style={{ alignItems: "center" }}>
+          <StyledTitlePink style={{ fontSize: 26 }}>
+            Don't have an account?
+          </StyledTitlePink>
+          <StyledPressable
+            onPress={() => {
+              // @ts-ignore
+              navigation.navigate("CreateAccount");
+            }}
+          >
+            <ButtonText>CREATE ACCOUNT</ButtonText>
+          </StyledPressable>
+        </StyledViewPinkBorder>
+      </AllViewStyle>
     </>
   );
 }

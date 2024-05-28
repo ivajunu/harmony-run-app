@@ -20,7 +20,14 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    DosisBold: require("../assets/fonts/static/Dosis-Bold.ttf"),
+    DosisRegular: require("../assets/fonts/static/Dosis-Regular.ttf"),
+    DosisExtraBold: require("../assets/fonts/static/Dosis-ExtraBold.ttf"),
+    DosisExtraLight: require("../assets/fonts/static/Dosis-ExtraLight.ttf"),
+    DosisLight: require("../assets/fonts/static/Dosis-Light.ttf"),
+    DosisMedium: require("../assets/fonts/static/Dosis-Medium.ttf"),
+    DosisSemiBold: require("../assets/fonts/static/Dosis-SemiBold.ttf"),
+    DosisAll: require("../assets/fonts/Dosis-VariableFont_wght.ttf"),
     ...FontAwesome.font,
   });
 

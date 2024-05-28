@@ -1,11 +1,25 @@
 import { WorkoutProps } from "@/Types/Types";
-import React, { useEffect, useState } from "react";
-import { View, Text, Pressable, FlatList, StyleSheet } from "react-native";
+import {
+  AllViewStyle,
+  StyledView,
+  StyledViewPinkBorder,
+} from "@/styled/StyledContainers";
+import {
+  ButtonTextLarge,
+  StyledPressableLarge,
+  StyledText16Bold,
+  StyledText16PinkBold,
+  StyledText16Regular,
+  StyledTitlePink,
+} from "@/styled/StyledText.styled";
+import React, { useState } from "react";
+import { View, FlatList } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function AllWorkouts() {
-  const [high, setHigh] = useState<boolean | undefined>(false);
-  const [medium, setMedium] = useState<boolean | undefined>(false);
-  const [low, setLow] = useState<boolean | undefined>(false);
+  const [high, setHigh] = useState<boolean>(false);
+  const [medium, setMedium] = useState<boolean>(false);
+  const [low, setLow] = useState<boolean>(false);
 
   type WorkoutState = {
     low: WorkoutProps[];
@@ -25,7 +39,7 @@ export default function AllWorkouts() {
     high: "https://harmony-run-backend.onrender.com/high",
   };
 
-  function fetchWorkouts(url: string, key: string) {
+  function fetchWorkouts(url: string, key: keyof WorkoutState) {
     fetch(url)
       .then((response) => response.json())
       .then((result: WorkoutProps[]) => {
@@ -41,135 +55,124 @@ export default function AllWorkouts() {
   }
 
   return (
-    <>
-      <Text>Browse all workouts</Text>
-      <View>
-        <Pressable
+    <AllViewStyle>
+      <ScrollView>
+        <StyledViewPinkBorder>
+          <StyledTitlePink>BROWSE ALL WORKOUTS</StyledTitlePink>
+          <StyledText16PinkBold>
+            Here you can browse the different workouts categorised by intensity
+            levels.
+          </StyledText16PinkBold>
+        </StyledViewPinkBorder>
+
+        <StyledPressableLarge
           onPress={() => {
             if (allWorkouts.high.length === 0) {
               fetchWorkouts(URL.high, "high");
             }
             setHigh(!high);
           }}
-          style={styles.container}
         >
-          <Text style={styles.title}>High intensity workouts</Text>
-        </Pressable>
+          <ButtonTextLarge>HIGH INTENSITY</ButtonTextLarge>
+        </StyledPressableLarge>
         {high && (
-          <View>
-            <FlatList
-              data={allWorkouts.high}
-              keyExtractor={(item) => item.id.toString()} // Assuming you want to use the index as the key
-              renderItem={({ item }) => (
+          <FlatList
+            data={allWorkouts.high}
+            scrollEnabled={false}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <StyledView>
+                <StyledText16Bold>Type:</StyledText16Bold>
+                <StyledText16Regular>{item.type}</StyledText16Regular>
                 <View>
-                  <Text>{item.type}</Text>
-                  <View>
-                    <Text>{item.duration}</Text>
-                  </View>
-                  <View>
-                    <Text>{item.instruction}</Text>
-                  </View>
-                  <View>
-                    <Text>{item.intensity}</Text>
-                  </View>
+                  <StyledText16Bold>Duration:</StyledText16Bold>
+                  <StyledText16Regular>{item.duration}</StyledText16Regular>
                 </View>
-              )}
-            />
-          </View>
+                <View>
+                  <StyledText16Bold>Instructions:</StyledText16Bold>
+                  <StyledText16Regular>{item.instruction}</StyledText16Regular>
+                </View>
+                <View>
+                  <StyledText16Bold>Intensity:</StyledText16Bold>
+                  <StyledText16Regular>{item.intensity}</StyledText16Regular>
+                </View>
+              </StyledView>
+            )}
+          />
         )}
-      </View>
-      <View>
-        <Pressable
+
+        <StyledPressableLarge
           onPress={() => {
             if (allWorkouts.medium.length === 0) {
               fetchWorkouts(URL.medium, "medium");
             }
             setMedium(!medium);
           }}
-          style={styles.container}
         >
-          <Text style={styles.title}>Medium intensity workouts</Text>
-        </Pressable>
+          <ButtonTextLarge>MEDIUM INTENSITY</ButtonTextLarge>
+        </StyledPressableLarge>
         {medium && (
-          <View>
-            <FlatList
-              data={allWorkouts.medium}
-              keyExtractor={(item) => item.id.toString()} // Assuming you want to use the index as the key
-              renderItem={({ item }) => (
-                <View style={styles.container}>
-                  <View>
-                    <Text style={styles.title}>{item.type}</Text>
-                  </View>
-                  <View>
-                    <Text>{item.duration}</Text>
-                  </View>
-                  <View>
-                    <Text>{item.instruction}</Text>
-                  </View>
-                  <View>
-                    <Text>{item.intensity}</Text>
-                  </View>
+          <FlatList
+            data={allWorkouts.medium}
+            scrollEnabled={false}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <StyledView>
+                <StyledText16Bold>Type:</StyledText16Bold>
+                <StyledText16Regular>{item.type}</StyledText16Regular>
+                <View>
+                  <StyledText16Bold>Duration:</StyledText16Bold>
+                  <StyledText16Regular>{item.duration}</StyledText16Regular>
                 </View>
-              )}
-            />
-          </View>
+                <View>
+                  <StyledText16Bold>Instructions:</StyledText16Bold>
+                  <StyledText16Regular>{item.instruction}</StyledText16Regular>
+                </View>
+                <View>
+                  <StyledText16Bold>Intensity:</StyledText16Bold>
+                  <StyledText16Regular>{item.intensity}</StyledText16Regular>
+                </View>
+              </StyledView>
+            )}
+          />
         )}
-      </View>
-      <View>
-        <Pressable
+
+        <StyledPressableLarge
           onPress={() => {
             if (allWorkouts.low.length === 0) {
               fetchWorkouts(URL.low, "low");
             }
             setLow(!low);
           }}
-          style={styles.container}
         >
-          <Text style={styles.title}>Low intensity workouts</Text>
-        </Pressable>
+          <ButtonTextLarge>LOW INTENSITY</ButtonTextLarge>
+        </StyledPressableLarge>
         {low && (
-          <View>
-            <FlatList
-              data={allWorkouts.low}
-              keyExtractor={(item) => item.id.toString()} // Assuming you want to use the index as the key
-              renderItem={({ item }) => (
+          <FlatList
+            data={allWorkouts.low}
+            scrollEnabled={false}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <StyledView>
+                <StyledText16Bold>Type:</StyledText16Bold>
+                <StyledText16Regular>{item.type}</StyledText16Regular>
                 <View>
-                  <Text>{item.type}</Text>
-                  <View>
-                    <Text>{item.duration}</Text>
-                  </View>
-                  <View>
-                    <Text>{item.instruction}</Text>
-                  </View>
-                  <View>
-                    <Text>{item.intensity}</Text>
-                  </View>
+                  <StyledText16Bold>Duration:</StyledText16Bold>
+                  <StyledText16Regular>{item.duration}</StyledText16Regular>
                 </View>
-              )}
-            />
-          </View>
+                <View>
+                  <StyledText16Bold>Instructions:</StyledText16Bold>
+                  <StyledText16Regular>{item.instruction}</StyledText16Regular>
+                </View>
+                <View>
+                  <StyledText16Bold>Intensity:</StyledText16Bold>
+                  <StyledText16Regular>{item.intensity}</StyledText16Regular>
+                </View>
+              </StyledView>
+            )}
+          />
         )}
-      </View>
-    </>
+      </ScrollView>
+    </AllViewStyle>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#a01d5d",
-    margin: 10,
-    borderRadius: 15,
-    paddingTop: 15,
-    paddingBottom: 15,
-  },
-  title: {
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-  },
-  description: {
-    margin: 10,
-    color: "white",
-  },
-});

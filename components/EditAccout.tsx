@@ -6,14 +6,30 @@ import {
   TextInput,
   StyleSheet,
   ActivityIndicator,
+  Alert,
+  Pressable,
 } from "react-native";
 import useLoggedInUser from "./Functions/fetchUser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import { useNavigation } from "expo-router";
+import {
+  ButtonTextWhite,
+  DeleteButton,
+  ErrorMessage,
+  StyledInput,
+  StyledPressablePink,
+} from "@/styled/StyledForms.styled";
+import {
+  StyledLinkPink,
+  StyledText16PinkBold,
+  StyledText16PinkRegular,
+  StyledTitlePink,
+} from "@/styled/StyledText.styled";
 
 export default function EditAccount() {
   const [signInUser, setSignInUser] = useState<string | null>();
+  const [deleteAccount, setDeleteAccount] = useState<boolean>(false);
   const navigation = useNavigation();
 
   const {
@@ -43,7 +59,7 @@ export default function EditAccount() {
     return password === repeatPassword || "Passwords must match";
   };
 
-  const submit = async (data: any) => {
+  const submit = async (data: Record<string, any>) => {
     try {
       const response = await fetch(
         `https://harmony-run-backend.onrender.com/users/${user.id}`,
@@ -74,65 +90,87 @@ export default function EditAccount() {
 
   const deleteUser = async () => {
     try {
-      const response = await fetch(
-        `https://harmony-run-backend.onrender.com/users/${user.id}`,
-        {
-          method: "DELETE",
-        }
+      Alert.alert(
+        "Delete Account",
+        "Are you sure you want to delete your account? Your account will be lost forever!",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "Delete",
+            onPress: async () => {
+              try {
+                const response = await fetch(
+                  `https://harmony-run-backend.onrender.com/users/${user.id}`,
+                  {
+                    method: "DELETE",
+                  }
+                );
+
+                if (!response.ok) {
+                  throw new Error("Failed to delete user");
+                }
+
+                const result = await response.text();
+                console.log("User deleted successfully:", result);
+                reset();
+
+                try {
+                  await AsyncStorage.removeItem("IsLoggedInKey");
+                  console.log("Lagrad inloggning har tagits bort.");
+
+                  // @ts-ignore
+                  navigation.navigate("Harmony Run");
+                  const getLoggedInUser = async () => {
+                    try {
+                      const value = await AsyncStorage.getItem("IsLoggedInKey");
+                      console.log("hämtat värde från store", value);
+                      setSignInUser(value);
+                    } catch (error) {
+                      console.error(
+                        "Error reading value from AsyncStorage:",
+                        error
+                      );
+                    }
+                  };
+                  getLoggedInUser();
+                } catch (error) {
+                  console.error(
+                    "Ett fel uppstod när den lagrade inloggningen skulle tas bort:",
+                    error
+                  );
+                }
+              } catch (error) {
+                console.error("Error deleting user:", error);
+              }
+            },
+            style: "destructive",
+          },
+        ],
+        { cancelable: false }
       );
-
-      if (!response.ok) {
-        throw new Error("Failed to delete user");
-      }
-
-      const result = await response.text();
-      console.log("User deleted successfully:", result);
-      reset();
-
-      try {
-        await AsyncStorage.removeItem("IsLoggedInKey");
-        console.log("Lagrad inloggning har tagits bort.");
-
-        // @ts-ignore
-        navigation.navigate("Harmony Run");
-        const getLoggedInUser = async () => {
-          try {
-            const value = await AsyncStorage.getItem("IsLoggedInKey");
-            console.log("hämtat värde från store", value);
-            setSignInUser(value);
-          } catch (error) {
-            console.error("Error reading value from AsyncStorage:", error);
-          }
-        };
-        getLoggedInUser();
-      } catch (error) {
-        console.error(
-          "Ett fel uppstod när den lagrade inloggningen skulle tas bort:",
-          error
-        );
-      }
     } catch (error) {
-      console.error("Error deleting user:", error);
+      console.error("Error showing delete confirmation:", error);
     }
   };
 
   return (
     <>
-      <View style={styles.form}>
-        <Text>Edit Account</Text>
-
+      <View>
         <Controller
           control={control}
           name="username"
           render={({ field: { onBlur, onChange, value } }) => (
             <View>
-              <Text>Username</Text>
-              <TextInput
+              <StyledText16PinkBold>Username</StyledText16PinkBold>
+              <StyledInput
                 onChangeText={onChange}
                 value={value ?? user?.username}
                 onBlur={onBlur}
                 placeholder="Username"
-                style={styles.input}
+                placeholderTextColor={"white"}
               />
             </View>
           )}
@@ -140,9 +178,9 @@ export default function EditAccount() {
         />
 
         {errors.username && (
-          <Text style={styles.errors}>
+          <ErrorMessage>
             Username must be at least 3 letters & it's required
-          </Text>
+          </ErrorMessage>
         )}
 
         <Controller
@@ -150,8 +188,8 @@ export default function EditAccount() {
           name="name"
           render={({ field: { onBlur, onChange, value } }) => (
             <View>
-              <Text>Name</Text>
-              <TextInput
+              <StyledText16PinkBold>Name</StyledText16PinkBold>
+              <StyledInput
                 onChangeText={onChange}
                 value={value ?? user?.name}
                 onBlur={onBlur}
@@ -163,44 +201,41 @@ export default function EditAccount() {
           rules={{ minLength: 2, required: true }}
         />
         {errors.name && (
-          <Text style={styles.errors}>
+          <ErrorMessage>
             Name must be at least 2 letters & it's required{" "}
-          </Text>
+          </ErrorMessage>
         )}
         <Controller
           control={control}
           name="email"
           render={({ field: { onBlur, onChange, value } }) => (
             <View>
-              <Text>Email</Text>
-              <TextInput
+              <StyledText16PinkBold>Email</StyledText16PinkBold>
+              <StyledInput
                 onChangeText={onChange}
                 value={value ?? user?.email}
                 onBlur={onBlur}
                 placeholder="Email"
-                style={styles.input}
               />
             </View>
           )}
           rules={{ required: true, pattern: /\S+@\S+\.\S+/ }}
         />
         {errors.email && (
-          <Text style={styles.errors}>
-            Must be a valid email & it's required{" "}
-          </Text>
+          <ErrorMessage>Must be a valid email & it's required </ErrorMessage>
         )}
         <Controller
           control={control}
           name="password"
           render={({ field: { onBlur, onChange, value } }) => (
             <View>
-              <Text>Password</Text>
-              <TextInput
+              <StyledText16PinkBold>Password</StyledText16PinkBold>
+              <StyledInput
                 onChangeText={onChange}
                 value={value}
                 onBlur={onBlur}
                 placeholder="Password"
-                style={styles.input}
+                placeholderTextColor={"white"}
                 secureTextEntry={true}
               />
             </View>
@@ -208,20 +243,20 @@ export default function EditAccount() {
           rules={{ required: true, minLength: 8 }}
         />
         {errors.password && (
-          <Text style={styles.errors}>Minimum length is 8 characters</Text>
+          <ErrorMessage>Minimum length is 8 characters</ErrorMessage>
         )}
         <Controller
           control={control}
           name="repeatPassword"
           render={({ field: { onBlur, onChange, value } }) => (
             <View>
-              <Text>Repeat Password</Text>
-              <TextInput
+              <StyledText16PinkBold>Repeat Password</StyledText16PinkBold>
+              <StyledInput
                 onChangeText={onChange}
                 value={value}
                 onBlur={onBlur}
                 placeholder="Repeat password"
-                style={styles.input}
+                placeholderTextColor={"white"}
                 secureTextEntry={true}
               />
             </View>
@@ -232,11 +267,30 @@ export default function EditAccount() {
           }}
         />
         {errors.repeatPassword && (
-          <Text style={styles.errors}>Passwords must match</Text>
+          <ErrorMessage>Passwords must match</ErrorMessage>
         )}
 
-        <Button title="Submit" onPress={handleSubmit(submit)} />
-        <Button title="Delete Account" onPress={deleteUser} />
+        <StyledPressablePink onPress={handleSubmit(submit)}>
+          <ButtonTextWhite>EDIT</ButtonTextWhite>
+        </StyledPressablePink>
+        <Pressable
+          onPress={() => {
+            setDeleteAccount(!deleteAccount);
+          }}
+        >
+          <StyledLinkPink>Delete Account</StyledLinkPink>
+        </Pressable>
+        {deleteAccount && (
+          <View>
+            <StyledText16PinkBold>
+              Are you sure that you want to delete your account?
+            </StyledText16PinkBold>
+
+            <DeleteButton onPress={deleteUser}>
+              <ButtonTextWhite>DELETE ACCOUNT</ButtonTextWhite>
+            </DeleteButton>
+          </View>
+        )}
       </View>
     </>
   );

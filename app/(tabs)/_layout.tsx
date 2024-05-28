@@ -50,6 +50,7 @@ export default function TabLayout() {
         headerTitleStyle: {
           fontSize: 30,
           paddingHorizontal: 40,
+          fontFamily: "DosisBold",
         },
         drawerStyle: {
           backgroundColor: "#a01d5d",
@@ -71,7 +72,7 @@ export default function TabLayout() {
             </View>
           </View>
         ),
-        // headerTitle: "Harmony Run",
+        headerTitle: "Harmony Run",
       }}
     >
       <Drawer.Screen
@@ -82,19 +83,21 @@ export default function TabLayout() {
         }}
       />
       <Drawer.Screen
-        name="Daily health form"
+        name="DailyHealth"
         component={Dailyhealth}
         options={{
           drawerIcon: () => <Icon name="heart-o" color={"#f3ecef"} />,
+          drawerLabel: "Health form",
         }}
       />
       <Drawer.Screen
-        name="Dailyworkout"
+        name="WorkoutDaily"
         component={WorkoutDaily}
         options={{
           drawerIcon: () => (
             <Icon name="dumbbell" size={22} color={"#f3ecef"} version="5" />
           ),
+          drawerLabel: "Your workout",
         }}
       />
       <Drawer.Screen
@@ -102,6 +105,7 @@ export default function TabLayout() {
         component={AllWorkouts}
         options={{
           drawerIcon: () => <Icon name="list-alt" color={"#f3ecef"} />,
+          drawerLabel: "All workouts",
         }}
       />
       <Drawer.Screen
@@ -118,6 +122,8 @@ export default function TabLayout() {
         options={{
           drawerItemStyle: { display: "none" },
           drawerIcon: () => <Icon name="user" version="5" color={"#f3ecef"} />,
+          headerTitle: "Create Account",
+          drawerLabel: "Create Account",
         }}
       />
       <Drawer.Screen
@@ -134,6 +140,7 @@ export default function TabLayout() {
         options={{
           drawerItemStyle: { display: loggedIn ? "flex" : "none" },
           drawerIcon: () => <Icon name="user" version="5" color={"#f3ecef"} />,
+          drawerLabel: "My Pages",
         }}
       />
       <Drawer.Screen
@@ -141,7 +148,8 @@ export default function TabLayout() {
         component={SavedTraining}
         options={{
           drawerItemStyle: { display: loggedIn ? "flex" : "none" },
-          drawerIcon: () => <Icon name="user" version="5" color={"#f3ecef"} />,
+          drawerIcon: () => <Icon name="save" version="5" color={"#f3ecef"} />,
+          drawerLabel: "Saved Exercises",
         }}
       />
     </Drawer.Navigator>

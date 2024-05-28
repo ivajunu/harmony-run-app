@@ -4,6 +4,21 @@ import { TextInput } from "react-native";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { setIsLoggedInKey } from "@/components/Functions/Functions";
 import { useNavigation } from "@react-navigation/native";
+import {
+  ButtonTextWhite,
+  ErrorMessage,
+  StyledInput,
+  StyledPressablePink,
+} from "@/styled/StyledForms.styled";
+import {
+  StyledText16PinkBold,
+  StyledTitlePink,
+} from "@/styled/StyledText.styled";
+import {
+  AllViewStyle,
+  NoPaddingPinkBorder,
+  StyledViewPinkBorder,
+} from "@/styled/StyledContainers";
 
 export default function CreateAccount() {
   const navigation = useNavigation();
@@ -51,141 +66,132 @@ export default function CreateAccount() {
 
   return (
     <>
-      <View style={styles.form}>
-        <Text>Create account</Text>
+      <>
+        <StyledViewPinkBorder>
+          <StyledTitlePink style={{ textAlign: "center", fontSize: 26 }}>
+            CREATE ACCOUNT
+          </StyledTitlePink>
+          <StyledText16PinkBold style={{ textAlign: "center" }}>
+            Oh, how fun to see you here!
+          </StyledText16PinkBold>
+          <Controller
+            control={control}
+            name="username"
+            render={({ field: { onBlur, onChange, value } }) => (
+              <View>
+                <StyledText16PinkBold>Username</StyledText16PinkBold>
+                <StyledInput
+                  onChangeText={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                  placeholderTextColor={"white"}
+                  placeholder="Username"
+                />
+              </View>
+            )}
+            rules={{ minLength: 3, required: true }}
+          />
 
-        <Controller
-          control={control}
-          name="username"
-          render={({ field: { onBlur, onChange, value } }) => (
-            <View>
-              <Text>Username</Text>
-              <TextInput
-                onChangeText={onChange}
-                value={value}
-                onBlur={onBlur}
-                placeholder="Username"
-                style={styles.input}
-              />
-            </View>
+          {errors.username && (
+            <ErrorMessage>
+              Username must be at least 3 letters & it's required
+            </ErrorMessage>
           )}
-          rules={{ minLength: 3, required: true }}
-        />
 
-        {errors.username && (
-          <Text style={styles.errors}>
-            Username must be at least 3 letters & it's required
-          </Text>
-        )}
-
-        <Controller
-          control={control}
-          name="name"
-          render={({ field: { onBlur, onChange, value } }) => (
-            <View>
-              <Text>Name</Text>
-              <TextInput
-                onChangeText={onChange}
-                value={value}
-                onBlur={onBlur}
-                placeholder="Name"
-                style={styles.input}
-              />
-            </View>
+          <Controller
+            control={control}
+            name="name"
+            render={({ field: { onBlur, onChange, value } }) => (
+              <View>
+                <StyledText16PinkBold>Name</StyledText16PinkBold>
+                <StyledInput
+                  onChangeText={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                  placeholderTextColor={"white"}
+                  placeholder="Name"
+                />
+              </View>
+            )}
+            rules={{ minLength: 2, required: true }}
+          />
+          {errors.name && (
+            <ErrorMessage>
+              Name must be at least 2 letters & it's required{" "}
+            </ErrorMessage>
           )}
-          rules={{ minLength: 2, required: true }}
-        />
-        {errors.name && (
-          <Text style={styles.errors}>
-            Name must be at least 2 letters & it's required{" "}
-          </Text>
-        )}
-        <Controller
-          control={control}
-          name="email"
-          render={({ field: { onBlur, onChange, value } }) => (
-            <View>
-              <Text>Email</Text>
-              <TextInput
-                onChangeText={onChange}
-                value={value}
-                onBlur={onBlur}
-                placeholder="Email"
-                style={styles.input}
-              />
-            </View>
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { onBlur, onChange, value } }) => (
+              <View>
+                <StyledText16PinkBold>Email</StyledText16PinkBold>
+                <StyledInput
+                  onChangeText={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                  placeholderTextColor={"white"}
+                  placeholder="Email"
+                />
+              </View>
+            )}
+            rules={{ required: true, pattern: /\S+@\S+\.\S+/ }}
+          />
+          {errors.email && (
+            <ErrorMessage>Must be a valid email & it's required </ErrorMessage>
           )}
-          rules={{ required: true, pattern: /\S+@\S+\.\S+/ }}
-        />
-        {errors.email && (
-          <Text style={styles.errors}>
-            Must be a valid email & it's required{" "}
-          </Text>
-        )}
-        <Controller
-          control={control}
-          name="password"
-          render={({ field: { onBlur, onChange, value } }) => (
-            <View>
-              <Text>Password</Text>
-              <TextInput
-                onChangeText={onChange}
-                value={value}
-                onBlur={onBlur}
-                placeholder="Password"
-                style={styles.input}
-                secureTextEntry={true}
-              />
-            </View>
+          <Controller
+            control={control}
+            name="password"
+            render={({ field: { onBlur, onChange, value } }) => (
+              <View>
+                <StyledText16PinkBold>Password</StyledText16PinkBold>
+                <StyledInput
+                  onChangeText={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                  placeholder="Password"
+                  placeholderTextColor={"white"}
+                  secureTextEntry={true}
+                />
+              </View>
+            )}
+            rules={{ required: true, minLength: 8 }}
+          />
+          {errors.password && (
+            <ErrorMessage>Minimum length is 8 characters</ErrorMessage>
           )}
-          rules={{ required: true, minLength: 8 }}
-        />
-        {errors.password && (
-          <Text style={styles.errors}>Minimum length is 8 characters</Text>
-        )}
-        <Controller
-          control={control}
-          name="repeatPassword"
-          render={({ field: { onBlur, onChange, value } }) => (
-            <View>
-              <Text>Repeat Password</Text>
-              <TextInput
-                onChangeText={onChange}
-                value={value}
-                onBlur={onBlur}
-                placeholder="Repeat password"
-                style={styles.input}
-                secureTextEntry={true}
-              />
-            </View>
+          <Controller
+            control={control}
+            name="repeatPassword"
+            render={({ field: { onBlur, onChange, value } }) => (
+              <View>
+                <StyledText16PinkBold>Repeat Password</StyledText16PinkBold>
+                <StyledInput
+                  onChangeText={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                  placeholder="Repeat password"
+                  placeholderTextColor={"white"}
+                  secureTextEntry={true}
+                />
+              </View>
+            )}
+            rules={{
+              required: true,
+              validate: validatePasswordMatch,
+            }}
+          />
+          {errors.repeatPassword && (
+            <ErrorMessage>Passwords must match</ErrorMessage>
           )}
-          rules={{
-            required: true,
-            validate: validatePasswordMatch,
-          }}
-        />
-        {errors.repeatPassword && (
-          <Text style={styles.errors}>Password must be same</Text>
-        )}
-
-        <Button title="submit" onPress={handleSubmit(submit)} />
-      </View>
+          <View style={{ alignItems: "center", padding: 10 }}>
+            <StyledPressablePink onPress={handleSubmit(submit)}>
+              <ButtonTextWhite>CREATE ACCOUNT</ButtonTextWhite>
+            </StyledPressablePink>
+          </View>
+        </StyledViewPinkBorder>
+      </>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  form: {
-    padding: 15,
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-  errors: {
-    fontWeight: "bold",
-    color: "red",
-  },
-});

@@ -1,5 +1,11 @@
 import { Homepage } from "@/Types/Types";
 import { getLoggedInUser } from "@/components/Functions/Functions";
+import { StyledView } from "@/styled/StyledContainers";
+import {
+  StyledH1,
+  StyledText16Regular,
+  StyledTitle,
+} from "@/styled/StyledText.styled";
 import { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 
@@ -14,7 +20,6 @@ export default function Home() {
       .then((response) => response.json())
       .then((result: Homepage[]) => {
         setIntro(result);
-        console.log(result);
       });
   }, []);
 
@@ -25,14 +30,14 @@ export default function Home() {
           data={intro}
           keyExtractor={(intro) => intro.id.toString()}
           renderItem={({ item }) => (
-            <View style={styles.container}>
+            <StyledView>
               <View>
-                <Text style={styles.title}>{item.headline}</Text>
+                <StyledTitle>{item.headline}</StyledTitle>
               </View>
               <View>
-                <Text style={styles.description}>{item.description}</Text>
+                <StyledText16Regular>{item.description}</StyledText16Regular>
               </View>
-            </View>
+            </StyledView>
           )}
         />
       )}

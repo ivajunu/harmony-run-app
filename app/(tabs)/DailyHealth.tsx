@@ -1,7 +1,15 @@
 import { Converter, storeBackendKey } from "@/components/Functions/Functions";
+import { StyledQ } from "@/styled/StyledContainers";
+import {
+  StyledTitle,
+  StyledPressable,
+  ButtonText,
+  StyledTitlePink,
+} from "@/styled/StyledText.styled";
+
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useMemo, useState } from "react";
-import { View, Text, Pressable, ScrollView, Button } from "react-native";
+import { View, ScrollView } from "react-native";
 import { RadioButtonProps, RadioGroup } from "react-native-radio-buttons-group";
 
 export default function HealthForm() {
@@ -22,26 +30,31 @@ export default function HealthForm() {
         id: "1",
         label: "Happy & Motivated",
         value: "5",
+        color: "white",
       },
       {
         id: "2",
         label: "Good",
         value: "4",
+        color: "white",
       },
       {
         id: "3",
         label: "So-so",
         value: "3",
+        color: "white",
       },
       {
         id: "4",
         label: "Unmotivated",
         value: "2",
+        color: "white",
       },
       {
         id: "5",
         label: "Bad",
         value: "1",
+        color: "white",
       },
     ],
     []
@@ -53,21 +66,25 @@ export default function HealthForm() {
         id: "1",
         label: "Energetic",
         value: "5",
+        color: "white",
       },
       {
         id: "2",
         label: "Good",
         value: "4",
+        color: "white",
       },
       {
         id: "3",
         label: "A bit tired",
         value: "2",
+        color: "white",
       },
       {
         id: "4",
         label: "Very tired",
         value: "0",
+        color: "white",
       },
     ],
     []
@@ -79,11 +96,13 @@ export default function HealthForm() {
         id: "1",
         label: "Yes",
         value: "0",
+        color: "white",
       },
       {
         id: "2",
         label: "No",
         value: "5",
+        color: "white",
       },
     ],
     []
@@ -95,31 +114,37 @@ export default function HealthForm() {
         id: "1",
         label: "No",
         value: "5",
+        color: "white",
       },
       {
         id: "2",
         label: "Some discharge",
         value: "4",
+        color: "white",
       },
       {
         id: "3",
         label: "A lot of discharge",
         value: "3",
+        color: "white",
       },
       {
         id: "4",
         label: "Period=Light flow",
         value: "2",
+        color: "white",
       },
       {
         id: "5",
         label: "Period=Regular flow",
         value: "1",
+        color: "white",
       },
       {
         id: "6",
         label: "Period=Heavy flow",
         value: "0",
+        color: "white",
       },
     ],
     []
@@ -131,26 +156,31 @@ export default function HealthForm() {
         id: "1",
         label: "Yes a lot",
         value: "0",
+        color: "white",
       },
       {
         id: "2",
         label: "Yes a little bit",
         value: "1",
+        color: "white",
       },
       {
         id: "3",
         label: "Just a little",
         value: "3",
+        color: "white",
       },
       {
         id: "4",
         label: "Not really",
         value: "4",
+        color: "white",
       },
       {
         id: "5",
         label: "No",
         value: "5",
+        color: "white",
       },
     ],
     []
@@ -161,11 +191,13 @@ export default function HealthForm() {
         id: "1",
         label: "Yes",
         value: "3",
+        color: "white",
       },
       {
         id: "2",
         label: "No",
         value: "5",
+        color: "white",
       },
     ],
     []
@@ -223,48 +255,147 @@ export default function HealthForm() {
     storeBackendKey(finalresult);
 
     // @ts-ignore
-    navigation.navigate("Dailyworkout");
+    navigation.navigate("WorkoutDaily");
   }
 
   return (
     <ScrollView>
-      <View>
-        <Text>How are you feeling today?</Text>
-        <RadioGroup radioButtons={Mood} selectedId={mood} onPress={setMood} />
+      <View style={{ flex: 1, alignItems: "center", padding: 20 }}>
+        <StyledTitlePink>
+          Welcome, let's see how you are feeling today
+        </StyledTitlePink>
       </View>
-      <View>
-        <Text>What is your energy level?</Text>
+      <StyledQ>
+        <StyledTitle>How are you feeling today?</StyledTitle>
+        <RadioGroup
+          radioButtons={Mood}
+          selectedId={mood}
+          onPress={setMood}
+          containerStyle={{
+            padding: 10,
+            alignItems: "flex-start",
+            maxWidth: "100%",
+            width: 280,
+          }}
+          labelStyle={{
+            color: "white",
+            fontSize: 16,
+            fontFamily: "DosisBold",
+            padding: 10,
+          }}
+        />
+      </StyledQ>
+      <StyledQ>
+        <StyledTitle>What is your energy level?</StyledTitle>
         <RadioGroup
           radioButtons={Energy}
           selectedId={energy}
           onPress={setEnergy}
+          containerStyle={{
+            padding: 10,
+            alignItems: "flex-start",
+            maxWidth: "100%",
+            width: 280,
+          }}
+          labelStyle={{
+            color: "white",
+            fontSize: 16,
+            fontFamily: "DosisBold",
+            padding: 10,
+          }}
         />
-      </View>
-      <View>
-        <Text>Do you have any pain in your body?</Text>
-        <RadioGroup radioButtons={Pain} selectedId={pain} onPress={setPain} />
-      </View>
-      <View>
-        <Text>Are you on your period?</Text>
+      </StyledQ>
+      <StyledQ>
+        <StyledTitle>Do you have any pain in your body?</StyledTitle>
+        <RadioGroup
+          radioButtons={Pain}
+          selectedId={pain}
+          onPress={setPain}
+          containerStyle={{
+            padding: 10,
+            alignItems: "flex-start",
+            maxWidth: "100%",
+            width: 280,
+          }}
+          labelStyle={{
+            color: "white",
+            fontSize: 16,
+            fontFamily: "DosisBold",
+            padding: 10,
+          }}
+        />
+      </StyledQ>
+      <StyledQ>
+        <StyledTitle>Are you on your period?</StyledTitle>
         <RadioGroup
           radioButtons={Period}
           selectedId={period}
           onPress={setPeriod}
+          containerStyle={{
+            padding: 10,
+            alignItems: "flex-start",
+            maxWidth: "100%",
+            width: 280,
+          }}
+          labelStyle={{
+            color: "white",
+            fontSize: 16,
+            fontFamily: "DosisBold",
+            padding: 10,
+          }}
         />
-      </View>
-      <View>
-        <Text>Discharge/Flow?</Text>
-        <RadioGroup radioButtons={Flow} selectedId={flow} onPress={setFlow} />
-      </View>
-      <View>
-        <Text>Do you have any period pain?</Text>
+      </StyledQ>
+      <StyledQ>
+        <StyledTitle>Discharge/Flow?</StyledTitle>
+        <RadioGroup
+          radioButtons={Flow}
+          selectedId={flow}
+          onPress={setFlow}
+          containerStyle={{
+            padding: 10,
+            alignItems: "flex-start",
+            maxWidth: "100%",
+            width: 280,
+          }}
+          labelStyle={{
+            color: "white",
+            fontSize: 16,
+            fontFamily: "DosisBold",
+            padding: 10,
+          }}
+        />
+      </StyledQ>
+      <StyledQ>
+        <StyledTitle>Do you have any period pain?</StyledTitle>
         <RadioGroup
           radioButtons={PeriodPain}
           selectedId={periodPain}
           onPress={setPeriodPain}
+          containerStyle={{
+            padding: 10,
+            alignItems: "flex-start",
+            maxWidth: "100%",
+            width: 280,
+          }}
+          labelStyle={{
+            color: "white",
+            fontSize: 16,
+            fontFamily: "DosisBold",
+            padding: 10,
+          }}
         />
+      </StyledQ>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <StyledPressable onPress={handlesubmit} disabled={disabled}>
+          <ButtonText>SUBMIT</ButtonText>
+        </StyledPressable>
       </View>
-      <Button onPress={handlesubmit} disabled={disabled} title="Send" />
     </ScrollView>
   );
 }
