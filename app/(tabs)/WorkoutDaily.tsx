@@ -120,10 +120,6 @@ export default function WorkoutDaily() {
     }
   };
 
-  if (loading || userLoading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
-  }
-
   return (
     <View>
       <View>

@@ -69,9 +69,9 @@ export default function EditAccount() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            username: data.username,
-            name: data.name,
-            email: data.email,
+            username: data.username || user.username,
+            name: data.name || user.name,
+            email: data.email || user.email,
             password: data.password,
           }),
         }
@@ -83,6 +83,7 @@ export default function EditAccount() {
 
       const result = await response.text();
       console.log("User updated successfully:", result);
+      Alert.alert("You have successfully updated your information");
     } catch (error) {
       console.error("Error updating user:", error);
     }

@@ -42,8 +42,11 @@ export default function MyPages() {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("IsLoggedInKey");
-      console.log("Lagrad inloggning har tagits bort.");
-
+      console.log("IsLoggedInKey har tagits bort.");
+      await AsyncStorage.removeItem("setUserID");
+      console.log("setUserID har tagits bort.");
+      await AsyncStorage.removeItem("backendKey");
+      console.log("backendKey har tagits bort.");
       // @ts-ignore
       navigation.navigate("Harmony Run");
       const getLoggedInUser = async () => {

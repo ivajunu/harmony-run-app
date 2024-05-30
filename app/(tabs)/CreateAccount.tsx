@@ -1,7 +1,5 @@
-import { useState } from "react";
-import { View, Text, StyleSheet, Pressable, Button } from "react-native";
-import { TextInput } from "react-native";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { View } from "react-native";
+import { useForm, Controller } from "react-hook-form";
 import { setIsLoggedInKey } from "@/components/Functions/Functions";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -14,11 +12,7 @@ import {
   StyledText16PinkBold,
   StyledTitlePink,
 } from "@/styled/StyledText.styled";
-import {
-  AllViewStyle,
-  NoPaddingPinkBorder,
-  StyledViewPinkBorder,
-} from "@/styled/StyledContainers";
+import { StyledViewPinkBorder } from "@/styled/StyledContainers";
 
 export default function CreateAccount() {
   const navigation = useNavigation();
